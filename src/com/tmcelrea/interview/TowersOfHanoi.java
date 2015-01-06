@@ -5,22 +5,43 @@ import java.util.List;
 
 public class TowersOfHanoi {
 
+
+
+    public static void main(String[] args) {
+        TowersOfHanoi towers = new TowersOfHanoi(5, "A", "X" ,"B");
+        towers.print();
+        towers.solve(new Integer(towers.size.intValue()), towers.towerNames.get(0), towers.towerNames.get(1), towers.towerNames.get(2));
+    }
+
+
+    // Height of the tower
     Integer size = 0;
 
+    // Step number (for logging)
     Integer step = 0;
 
+    // Towers
     List<List<Integer>> towers = new ArrayList<List<Integer>>();
     List<Integer> left = new ArrayList<Integer>();
     List<Integer> right = new ArrayList<Integer>();
     List<Integer> spare = new ArrayList<Integer>();
 
+    // String names of each tower
     List<String> towerNames = new ArrayList<String>();
 
     public TowersOfHanoi(int size, String leftName, String spareName, String rightName) {
-        this.reset(size, leftName, spareName, rightName);
+        this.init(size, leftName, spareName, rightName);
     }
 
-    private void reset(Integer size, String leftName, String spareName, String rightName) {
+    /**
+     * Initializes the towers' size, contents and name
+     *
+     * @param size
+     * @param leftName
+     * @param spareName
+     * @param rightName
+     */
+    private void init(Integer size, String leftName, String spareName, String rightName) {
         this.size = size;
         this.towerNames.add(leftName);
         this.towerNames.add(spareName);
@@ -35,22 +56,24 @@ public class TowersOfHanoi {
         towers.add(right);
     }
 
-    public static void main(String[] args) {
-        TowersOfHanoi towers = new TowersOfHanoi(5, "A", "X" ,"B");
-        towers.print();
-        towers.solve(new Integer(towers.size.intValue()), towers.towerNames.get(0), towers.towerNames.get(1), towers.towerNames.get(2));
-    }
 
-    public void solve(Integer n, String from, String inter, String to) {
+    /**
+     * Recursive function
+     * @param disc
+     * @param from
+     * @param spare
+     * @param to
+     */
+    public void solve(Integer disc, String from, String spare, String to) {
         this.step++;
-        if (n == 1){
-            System.out.println("\nDisk " + n + " from " + from + " to " + to);
+        if (disc == 1){
+            System.out.println("\nDisc " + disc + " from " + from + " to " + to);
             push(to, pop(from));
         }else {
-            solve(n - 1, from, to, inter);
-            System.out.println("\nDisk " + n + " from " + from + " to " + to);
+            solve(disc - 1, from, to, spare);
+            System.out.println("\nDisc " + disc + " from " + from + " to " + to);
             push(to, pop(from));
-            solve(n - 1, inter, from, to);
+            solve(disc - 1, spare, from, to);
         }
     }
 
